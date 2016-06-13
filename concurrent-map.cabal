@@ -1,0 +1,61 @@
+name:                concurrent-map
+version:             1.0
+build-type:          Simple
+cabal-version:       >=1.10
+
+flag Testing
+    description:       Build testing and benchmark utility
+    default:           False
+
+library
+  exposed-modules:     ConcurrentMap  
+  other-modules:       Skiplist, GuardedValue
+  build-depends:       base, 
+                       ghc-prim, 
+                       random, 
+                       array, 
+                       containers
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+executable benchmark-skiplist
+  main-is:             benchmarkSkiplist.hs
+  hs-source-dirs:      src
+  ghc-options:         -threaded -O2 "-with-rtsopts=-N -H2G" 
+  build-depends:       base, 
+                       random, 
+                       time, 
+                       array, 
+                       containers,
+                       hstats
+  default-language:    Haskell2010
+  if flag(Testing)
+    buildable:         True
+  else
+    buildable:         False
+
+executable test-skiplist
+  main-is:             testSkipList.hs
+  hs-source-dirs:      src
+  ghc-options:         -threaded -O2 "-with-rtsopts=-N -H2G"
+  build-depends:       base, 
+                       random, 
+                       containers, 
+                       time, 
+                       text, 
+                       array
+  default-language:    Haskell2010
+  if flag(Testing)
+    buildable:         True
+  else
+    buildable:         False
+
+test-suite test-conc-map
+  type:                exitcode-stdio-1.0
+  main-is:             Tests.hs
+  hs-source-dirs:      src, test
+  build-depends:       base,
+                       HUnit,
+                       test-framework,
+                       test-framework-hunit
+  default-language:    Haskell2010  

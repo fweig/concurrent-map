@@ -1,0 +1,7 @@
+dist/
+benchmarks/
+*.o
+*.hi
+*.vim
+err.txt
+TODO
